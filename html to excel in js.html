@@ -1,0 +1,82 @@
+<html>
+<head>
+<title>Export HTML Table Data to Excel using JavaScript | Tutorialswebsite</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" >
+<script type="text/javascript">
+function exportToExcel(tableID, filename = ''){
+    var downloadurl;
+    var dataFileType = 'application/vnd.ms-excel';
+    var tableSelect = document.getElementById(tableID);
+    var tableHTMLData = tableSelect.outerHTML.replace(/ /g, '%20');
+    
+    // Specify file name
+    filename = filename?filename+'.xls':'export_excel_data.xls';
+    
+    // Create download link element
+    downloadurl = document.createElement("a");
+    
+    document.body.appendChild(downloadurl);
+    
+    if(navigator.msSaveOrOpenBlob){
+        var blob = new Blob(['\ufeff', tableHTMLData], {
+            type: dataFileType
+        });
+        navigator.msSaveOrOpenBlob( blob, filename);
+    }else{
+        // Create a link to the file
+        downloadurl.href = 'data:' + dataFileType + ', ' + tableHTMLData;
+    
+        // Setting the file name
+        downloadurl.download = filename;
+        
+        //triggering the function
+        downloadurl.click();
+    }
+}
+ 
+</script>
+</head>
+<body>
+<div class="container">
+<table id="tblexportData" class="table">
+<thead>
+    <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Age</th>
+        <th>Mobile</th>
+    </tr>
+	</thead>
+  <tbody>
+    <tr>
+        <td>Robert</td>
+        <td>robert@gmail.com</td>
+        <td>26</td>
+         <td>9999999999</td>
+    </tr>
+    <tr>
+        <td>Michael</td>
+        <td>michael@gmail.com</td>
+         <td>24</td>
+         <td>9999999999</td>
+    </tr>
+    <tr>
+        <td>Julie</td>
+        <td>julie@gmail.com</td>
+         <td>36</td>
+         <td>9999999999</td>
+    </tr>
+<tr>
+        <td>Trevor</td>
+        <td>trevor@gmail.com</td>
+         <td>28</td>
+         <td>9999999999</td>
+    </tr>
+	 </tbody>
+</table>
+ 
+<button onclick="exportToExcel('tblexportData', 'user-data')" class="btn btn-success">Export Table Data To Excel File</button>
+</div>
+</body>
+</html>
+
